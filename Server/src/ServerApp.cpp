@@ -10,6 +10,8 @@ HWND hMainWindow = NULL;
 void UpdateClientList()
 {
     std::lock_guard<std::recursive_mutex> lock(clientsMutex);
+    
+    ListView_DeleteAllItems(hListView);
 
     std::vector<std::wstring> existingKeys;
     int count = ListView_GetItemCount(hListView);
@@ -148,12 +150,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     case WM_UPDATE_LIST:
         UpdateClientList();
-        break;
-    case WM_TIMER:
-        if (wParam == ID_TIMER_UPDATE)
-        {
-            UpdateClientList();
-        }
         break;
     case WM_DESTROY:
         KillTimer(hWnd, ID_TIMER_UPDATE);
